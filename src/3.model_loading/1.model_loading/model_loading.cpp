@@ -24,7 +24,7 @@ unsigned int loadCubemap(vector<std::string> faces);
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
-
+const unsigned int N_ASTEROIDS = 10;
 // camera
 //0.00872685
 //0.0157073
@@ -34,7 +34,7 @@ const unsigned int SCR_HEIGHT = 600;
 Camera camera(glm::vec3(-0.919f, 0.085f, -30.92f));
 //Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 Arwing *arwing;
-Asteroid *asteroid;
+vector<Asteroid> asteroids;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -42,6 +42,36 @@ bool firstMouse = true;
 // timing
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
+
+void init_asteroids(){
+    for(int i=0; i<N_ASTEROIDS; i++){
+        Asteroid asteroid;
+        asteroids.push_back(asteroid);
+    }
+}
+
+void draw_asteroids(glm::mat4 *projection, glm::mat4 *view){
+    for(int i=0; i<N_ASTEROIDS; i++){
+
+        asteroids[i].shader->use();
+
+        // view/projection transformations remove translation from the view matrix
+    //        ourShader.setMat4("projection", projection);
+    //        ourShader.setMat4("view", view);
+
+    //        // render the loaded model
+    //        glm::mat4 model;
+    //        model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
+    //        model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// it's a bit too big for our scene, so scale it down
+    //        ourShader.setMat4("model", model);
+    //        ourModel.Draw(ourShader);
+        asteroids[i].pre_draw(projection, view);
+        asteroids[i].draw();
+        asteroids[i].move();
+    }
+
+}
+
 
 int main()
 {
@@ -94,7 +124,7 @@ int main()
 //    Model ourModel(FileSystem::getPath("resources/objects/Arwing/Arwing.obj"));
 
     arwing = new Arwing();
-    asteroid = new Asteroid();
+    init_asteroids();
 
     Shader skyboxShader("6.1.skybox.vs", "6.1.skybox.fs");
     float skyboxVertices[] = {
@@ -207,13 +237,12 @@ int main()
         glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
 
 
-
-
-        asteroid->shader->use();
+        view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
+        draw_asteroids(&projection, &view);
 
         // view/projection transformations
-        view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
-//        ourShader.setMat4("projection", projection);
+
+        //        ourShader.setMat4("projection", projection);
 //        ourShader.setMat4("view", view);
 
 //        // render the loaded model
@@ -222,9 +251,9 @@ int main()
 //        model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// it's a bit too big for our scene, so scale it down
 //        ourShader.setMat4("model", model);
 //        ourModel.Draw(ourShader);
-        asteroid->pre_draw(&projection, &view);
-        asteroid->draw();
-        asteroid->move();
+//        asteroid->pre_draw(&projection, &view);
+//        asteroid->draw();
+//        asteroid->move();
         glDepthFunc(GL_LEQUAL);
 
 

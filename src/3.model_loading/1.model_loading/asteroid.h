@@ -14,6 +14,7 @@
 #include <learnopengl/model.h>
 
 #include <iostream>
+#include <random>
 
 
 class Asteroid
@@ -33,23 +34,21 @@ public:
     //float rand_pos;
     float rand_pos = -1.75f;
         
-    Asteroid(float rand_pos_) {
+    Asteroid() {
         this->shader = new Shader("1.model_loading.vs", "1.model_loading.fs");
         this->model = new Model(FileSystem::getPath("resources/objects/asteroid/10464_Asteroid_v1_Iterations-2.obj"));
-        dtime=0.01f;
-        angle=3.14f;
-        rand_pos_=rand_pos;
-        //rand_pos;
 
-        //original_position
-        //-1.0f,  1.0f, -1.0f,
-        current_position = glm::vec3(1.0f,rand_pos , 100.0f);
-        current_scale = glm::vec3(0.01f, 0.01f, 0.01f);
-        //current_rotate = glm::vec3(0.0f, 0.01f, 0.0f);
+        std::random_device rd;
+
+        std::mt19937 e2(rd());
+        int min = -90, max = 90 ;
+        std::uniform_int_distribution<int> dist(min,max);
+        float rand_pos = dist(e2)/1.0f;
+
+        current_position = glm::vec3(rand_pos,-1.75f, 100.0f);
+        current_scale = glm::vec3(0.005f, 0.005f, 0.005f);
         current_rotate = glm::vec3(0.4f, 0.6f, 0.8f);
     
-        //float rotAngle = (rand() % 360);
-        
 
     }
 
@@ -81,6 +80,7 @@ public:
         //}
     }
 };
+
 
 
 #endif // ARWING_H
