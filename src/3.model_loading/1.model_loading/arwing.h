@@ -33,7 +33,7 @@ public:
         this->model = new Model(FileSystem::getPath("resources/objects/Arwing/Arwing.obj"));
 
         //original_position
-        current_position = glm::vec3(0.0f, -1.75f, 0.0f);
+        current_position = glm::vec3(0.0f, -19.75f, 0.0f);
         current_scale = glm::vec3(0.1f, 0.1f, 0.1f);
     }
 
@@ -53,8 +53,15 @@ public:
         this->model->Draw(*this->shader);
     }
 
-    void move(){
-        this->current_position.x += 2.0f;
+    void move(int move){
+        if(move == (int) GLFW_KEY_W)
+            this->current_position.y += 2.0f;
+        else if(move == (int) GLFW_KEY_S)
+            this->current_position.y -= 2.0f;
+        else if(move == (int) GLFW_KEY_A)
+            this->current_position.x -= 2.0f;
+        else if(move == (int) GLFW_KEY_D)
+            this->current_position.x += 2.0f;
     }
 };
 

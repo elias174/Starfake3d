@@ -6,6 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <vector>
+#include <iostream>
 
 // Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
 enum Camera_Movement {
@@ -16,11 +17,13 @@ enum Camera_Movement {
 };
 
 // Default camera values
-const float YAW         = -90.0f;
+//const float YAW         = -268.9f;
+//const float PITCH       =  -24.9f;
+const float YAW         = 90.0f;
 const float PITCH       =  0.0f;
 const float SPEED       =  2.5f;
 const float SENSITIVITY =  0.1f;
-const float ZOOM        =  45.0f;
+const float ZOOM        =  80.0f;
 
 
 // An abstract camera class that processes input and calculates the corresponding Euler Angles, Vectors and Matrices for use in OpenGL
@@ -97,6 +100,8 @@ public:
             if (Pitch < -89.0f)
                 Pitch = -89.0f;
         }
+        std::cout << Pitch << std::endl;
+        std::cout << Yaw << std::endl;
 
         // Update Front, Right and Up Vectors using the updated Euler angles
         updateCameraVectors();
@@ -123,6 +128,10 @@ private:
         front.y = sin(glm::radians(Pitch));
         front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
         Front = glm::normalize(front);
+//                std::cout << front.x << std::endl;
+//                std::cout << front.y << std::endl;
+//                std::cout << front.z << std::endl;
+
         // Also re-calculate the Right and Up vector
         Right = glm::normalize(glm::cross(Front, WorldUp));  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
         Up    = glm::normalize(glm::cross(Right, Front));
