@@ -26,6 +26,7 @@ const unsigned int SCR_HEIGHT = 600;
 
 // camera
 Camera camera(glm::vec3(0.0f, 30.0f, 30.0f));
+Arwing *arwing;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -84,8 +85,7 @@ int main()
 //    // -----------
 //    Model ourModel(FileSystem::getPath("resources/objects/Arwing/Arwing.obj"));
 
-    Arwing arwing;
-
+    arwing = new Arwing();
 
 
     Shader skyboxShader("6.1.skybox.vs", "6.1.skybox.fs");
@@ -179,7 +179,7 @@ int main()
 
         // don't forget to enable shader before setting uniforms
 //        ourShader.use();
-        arwing.shader->use();
+        arwing->shader->use();
 
         // view/projection transformations
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
@@ -193,7 +193,8 @@ int main()
 //        model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// it's a bit too big for our scene, so scale it down
 //        ourShader.setMat4("model", model);
 //        ourModel.Draw(ourShader);
-        arwing.draw(&projection, &view);
+        arwing->pre_draw(&projection, &view);
+        arwing->draw();
 
         glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
         skyboxShader.use();
@@ -226,14 +227,16 @@ void processInput(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.ProcessKeyboard(FORWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.ProcessKeyboard(BACKWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.ProcessKeyboard(LEFT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.ProcessKeyboard(RIGHT, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
+        arwing->move();
+    }
+//        camera.ProcessKeyboard(FORWARD, deltaTime);
+//    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+//        camera.ProcessKeyboard(BACKWARD, deltaTime);
+//    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+//        camera.ProcessKeyboard(LEFT, deltaTime);
+//    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+//        camera.ProcessKeyboard(RIGHT, deltaTime);
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
