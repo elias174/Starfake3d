@@ -25,7 +25,12 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 // camera
-Camera camera(glm::vec3(0.0f, 30.0f, 30.0f));
+//0.00872685
+//0.0157073
+//0.999839
+
+
+Camera camera(glm::vec3(-0.919f, 0.085f, -30.92f));
 Arwing *arwing;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
@@ -167,7 +172,7 @@ int main()
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
-
+        //cout << currentFrame << endl;
         // input
         // -----
         processInput(window);
@@ -195,6 +200,13 @@ int main()
 //        ourModel.Draw(ourShader);
         arwing->pre_draw(&projection, &view);
         arwing->draw();
+        glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
+
+
+
+
+
+
 
         glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
         skyboxShader.use();
@@ -228,15 +240,15 @@ void processInput(GLFWwindow *window)
         glfwSetWindowShouldClose(window, true);
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
-        arwing->move();
+        arwing->move((int) GLFW_KEY_W);
     }
 //        camera.ProcessKeyboard(FORWARD, deltaTime);
-//    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-//        camera.ProcessKeyboard(BACKWARD, deltaTime);
-//    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-//        camera.ProcessKeyboard(LEFT, deltaTime);
-//    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-//        camera.ProcessKeyboard(RIGHT, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        arwing->move((int) GLFW_KEY_S);
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        arwing->move((int) GLFW_KEY_A);
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        arwing->move((int) GLFW_KEY_D);
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
