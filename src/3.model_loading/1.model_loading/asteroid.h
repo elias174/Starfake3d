@@ -30,16 +30,20 @@ public:
     float angle;
     float dtime;
     float rotAngle = (rand() % 360);
-
-
-    Asteroid() {
+    //float rand_pos;
+    float rand_pos = -1.75f;
+        
+    Asteroid(float rand_pos_) {
         this->shader = new Shader("1.model_loading.vs", "1.model_loading.fs");
         this->model = new Model(FileSystem::getPath("resources/objects/asteroid/10464_Asteroid_v1_Iterations-2.obj"));
         dtime=0.01f;
         angle=3.14f;
+        rand_pos_=rand_pos;
+        //rand_pos;
+
         //original_position
         //-1.0f,  1.0f, -1.0f,
-        current_position = glm::vec3(1.0f, -1.75f, 100.0f);
+        current_position = glm::vec3(1.0f,rand_pos , 100.0f);
         current_scale = glm::vec3(0.01f, 0.01f, 0.01f);
         //current_rotate = glm::vec3(0.0f, 0.01f, 0.0f);
         current_rotate = glm::vec3(0.4f, 0.6f, 0.8f);
@@ -68,13 +72,10 @@ public:
     }
 
     void move(){
-        //while(true){
+    //while(true){
             this->current_position.z -= 3.0f*0.16f;
             rotAngle += 0.06f*0.16f;
- 
             //angle += 0.06f*0.16f;
-            
-            std::cout<<this->current_rotate.z<<std::endl;
             //dtime +=0.01f;
 
         //}
