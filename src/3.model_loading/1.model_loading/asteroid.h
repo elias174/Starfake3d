@@ -39,7 +39,7 @@ public:
         angle=3.14f;
         //original_position
         //-1.0f,  1.0f, -1.0f,
-        current_position = glm::vec3(1.0f, -1.75f, 0.0f);
+        current_position = glm::vec3(1.0f, -1.75f, 100.0f);
         current_scale = glm::vec3(0.01f, 0.01f, 0.01f);
         //current_rotate = glm::vec3(0.0f, 0.01f, 0.0f);
         current_rotate = glm::vec3(0.4f, 0.6f, 0.8f);
@@ -69,7 +69,7 @@ public:
 
     void move(){
         //while(true){
-            this->current_position.z += 0.7f*0.16f;
+            this->current_position.z -= 3.0f*0.16f;
             rotAngle += 0.06f*0.16f;
  
             //angle += 0.06f*0.16f;

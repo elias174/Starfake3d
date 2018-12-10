@@ -13,6 +13,7 @@
 #include <iostream>
 
 #include "arwing.h"
+#include "asteroid.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -32,6 +33,7 @@ const unsigned int SCR_HEIGHT = 600;
 
 Camera camera(glm::vec3(-0.919f, 0.085f, -30.92f));
 Arwing *arwing;
+Asteroid *asteroid;
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -91,7 +93,7 @@ int main()
 //    Model ourModel(FileSystem::getPath("resources/objects/Arwing/Arwing.obj"));
 
     arwing = new Arwing();
-
+    asteroid = new Asteroid();
 
     Shader skyboxShader("6.1.skybox.vs", "6.1.skybox.fs");
     float skyboxVertices[] = {
@@ -205,7 +207,23 @@ int main()
 
 
 
+        asteroid->shader->use();
 
+        // view/projection transformations
+        view = glm::mat4(glm::mat3(camera.GetViewMatrix())); // remove translation from the view matrix
+//        ourShader.setMat4("projection", projection);
+//        ourShader.setMat4("view", view);
+
+//        // render the loaded model
+//        glm::mat4 model;
+//        model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
+//        model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// it's a bit too big for our scene, so scale it down
+//        ourShader.setMat4("model", model);
+//        ourModel.Draw(ourShader);
+        asteroid->pre_draw(&projection, &view);
+        asteroid->draw();
+        asteroid->move();
+        glDepthFunc(GL_LEQUAL);
 
 
         glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
