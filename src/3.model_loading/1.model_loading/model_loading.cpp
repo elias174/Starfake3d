@@ -32,6 +32,7 @@ const unsigned int SCR_HEIGHT = 600;
 
 
 Camera camera(glm::vec3(-0.919f, 0.085f, -30.92f));
+//Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 Arwing *arwing;
 Asteroid *asteroid;
 float lastX = SCR_WIDTH / 2.0f;
@@ -202,6 +203,7 @@ int main()
 //        ourModel.Draw(ourShader);
         arwing->pre_draw(&projection, &view);
         arwing->draw();
+        arwing->draw_bullets();
         glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
 
 
@@ -267,6 +269,8 @@ void processInput(GLFWwindow *window)
         arwing->move((int) GLFW_KEY_A);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         arwing->move((int) GLFW_KEY_D);
+    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        arwing->shoot();
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes

@@ -100,8 +100,8 @@ public:
             if (Pitch < -89.0f)
                 Pitch = -89.0f;
         }
-        std::cout << Pitch << std::endl;
-        std::cout << Yaw << std::endl;
+//        std::cout << Pitch << std::endl;
+//        std::cout << Yaw << std::endl;
 
         // Update Front, Right and Up Vectors using the updated Euler angles
         updateCameraVectors();
