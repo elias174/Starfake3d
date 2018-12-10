@@ -76,7 +76,6 @@ public:
             this->current_position.z -= 3.0f*0.16f;
             rotAngle += 0.06f*0.16f;
             //angle += 0.06f*0.16f;
-            std::cout<<this->current_rotate.z<<std::endl;
             //dtime +=0.01f;
 
         //}
