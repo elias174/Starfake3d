@@ -34,10 +34,13 @@ public:
     Arwing() {
         this->shader = new Shader("1.model_loading.vs", "1.model_loading.fs");
         this->model = new Model(FileSystem::getPath("resources/objects/Arwing/Arwing.obj"));
+        //this->model = new Model(FileSystem::getPath("resources/objects/asteroid/10464_Asteroid_v1_Iterations-2.obj"));
 
         //original_position
         current_position = glm::vec3(0.0f, -19.75f, 0.0f);
         current_scale = glm::vec3(0.1f, 0.1f, 0.1f);
+//        current_scale = glm::vec3(0.005f, 0.005f, 0.005f);
+
     }
 
     void pre_draw(glm::mat4 *projection, glm::mat4 *view){
@@ -71,6 +74,15 @@ public:
         fixed_pos.z += 3.0f;
         Bullet bullet(this->current_position);
         this->bullets.push_back(bullet);
+    }
+
+    glm::vec3 get_center_collide(){
+        return  this->current_position;
+    }
+
+    GLfloat get_radio_collide(){
+        GLfloat radio = 16.0f;
+        return radio;
     }
 
     void move(int move){

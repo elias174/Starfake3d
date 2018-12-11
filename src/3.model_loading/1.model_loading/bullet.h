@@ -34,6 +34,9 @@ public:
 
         //original_position
         this->current_position = current_position;
+        this->current_position.z += 13.0f;
+//        this->current_position.z += 3.0f;
+
         current_scale = glm::vec3(1.0f, 1.0f, 1.0f);
     }
 
@@ -50,6 +53,15 @@ public:
 
         matrix_model = glm::rotate(matrix_model, -3.14f/2.0f, glm::vec3(0.0f, 0.5f, 0.0f));
         this->shader->setMat4("model", matrix_model);
+    }
+
+    glm::vec3 get_center_collide(){
+        return  this->current_position;
+    }
+
+    GLfloat get_radio_collide(){
+        GLfloat radio = 6.0f;
+        return radio;
     }
 
     void draw(){

@@ -15,6 +15,7 @@
 
 #include "arwing.h"
 #include "asteroid.h"
+#include "collision.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -57,9 +58,13 @@ void init_asteroids(){
 }
 
 void draw_asteroids(glm::mat4 *projection, glm::mat4 *view){
-    for(int i=0; i<N_ASTEROIDS; i++){
-
-        asteroids[i].shader->use();
+    int index_asteroid=0;
+    for(Asteroid &asteroid : asteroids){
+        if(asteroid.destroyed){
+            asteroids.erase(asteroids.begin()+index_asteroid);
+            continue;
+        }
+        asteroid.shader->use();
 
         // view/projection transformations remove translation from the view matrix
     //        ourShader.setMat4("projection", projection);
@@ -71,9 +76,10 @@ void draw_asteroids(glm::mat4 *projection, glm::mat4 *view){
     //        model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));	// it's a bit too big for our scene, so scale it down
     //        ourShader.setMat4("model", model);
     //        ourModel.Draw(ourShader);
-        asteroids[i].pre_draw(projection, view);
-        asteroids[i].draw();
-        asteroids[i].move();
+        asteroid.pre_draw(projection, view);
+        asteroid.draw();
+        index_asteroid++;
+        asteroid.move();
     }
 
 }
@@ -216,7 +222,8 @@ int main()
         sec_before = sec;
         sec = (int) currentFrame;
         if(fmod(sec,3.0f) == 0.0f && sec > sec_before){
-            std::cout << "paso3segundos" << std::endl;
+            init_asteroids();
+            cout << "adding" << endl;
         }
         processInput(window);
 
@@ -281,6 +288,7 @@ int main()
         glDepthFunc(GL_LESS); // set depth function back to default
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
+        collision_asteroid_bullet(asteroids, arwing->bullets, arwing);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
