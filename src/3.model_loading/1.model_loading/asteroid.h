@@ -52,10 +52,10 @@ public:
         int min = -90, max = 90 ;
         std::uniform_int_distribution<int> dist(min,max);
         float rand_pos = dist(e2)/1.0f;
+        current_rotate = glm::vec3(0.4f, 0.6f, 0.8f);
 
         current_position = glm::vec3(rand_pos,-1.75f, 100.0f);
-        current_scale = glm::vec3(3.0f, 3.0f, 3.0f);
-        current_rotate = glm::vec3(0.4f, 0.6f, 0.8f);
+        current_scale = glm::vec3(0.5f, 0.5f, 0.5f);
         destroyed = false;
     }
 
@@ -92,7 +92,13 @@ public:
 
     void move(){
     //while(true){
-            this->current_position.z -= 1.0f*0.16f;
+
+            this->current_position.z -= 0.5f*0.16f;
+            this->current_scale.x += 0.01*0.16f;
+        this->current_scale.y += 0.01*0.16f;
+
+        this->current_scale.z += 0.01*0.16f;
+
             rotAngle += 0.06f*0.16f;
             //angle += 0.06f*0.16f;
             //dtime +=0.01f;
