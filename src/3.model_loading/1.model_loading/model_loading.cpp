@@ -11,6 +11,7 @@
 #include <learnopengl/model.h>
 
 #include <iostream>
+#include <math.h>
 
 #include "arwing.h"
 #include "asteroid.h"
@@ -42,6 +43,11 @@ bool firstMouse = true;
 // timing
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
+
+
+float sec = 0;
+float sec_before = 0;
+
 
 void init_asteroids(){
     for(int i=0; i<N_ASTEROIDS; i++){
@@ -198,6 +204,7 @@ int main()
     skyboxShader.setInt("skybox", 0);
     // render loop
     // -----------
+
     while (!glfwWindowShouldClose(window))
     {
         // per-frame time logic
@@ -205,9 +212,12 @@ int main()
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
-        //cout << currentFrame << endl;
-        // input
-        // -----
+
+        sec_before = sec;
+        sec = (int) currentFrame;
+        if(fmod(sec,3.0f) == 0.0f && sec > sec_before){
+            std::cout << "paso3segundos" << std::endl;
+        }
         processInput(window);
 
         // render
